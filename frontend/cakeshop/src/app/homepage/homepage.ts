@@ -12,12 +12,10 @@ import AOS from 'aos';
 export class Homepage implements AfterViewInit   {
 
 ngAfterViewInit(): void {
-  const isMobile = window.innerWidth < 768;
 
   AOS.init({
     duration: 1200,
     once: true,
-    disable: isMobile
   });
 
   setTimeout(() => {
