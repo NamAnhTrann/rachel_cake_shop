@@ -10,7 +10,7 @@ require("dotenv").config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:4200", "https://rachel-cake-shop.vercel.app/#/"],
+    origin: ["http://localhost:4200", "https://rachel-cake-shop.vercel.app"],
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
