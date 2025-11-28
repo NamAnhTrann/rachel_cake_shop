@@ -16,7 +16,7 @@ export class Db {
     const hostname = window.location.hostname;
 
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      this.baseUrl = 'http://localhost:3030';
+      this.baseUrl = 'http://localhost:4040';
     } else {
       this.baseUrl = '';
     }
