@@ -25,7 +25,7 @@ const add_contact = async function (req, res) {
                 pass: process.env.EMAIL_PASS,
             },
         });
-        const compiledHtmlString = fs_1.default.readFileSync(path_1.default.join(process.cwd(), "backend/src/dopamine_contact.html"), "utf-8");
+        const compiledHtmlString = fs_1.default.readFileSync(path_1.default.join(process.cwd(), "src/dopamine_contact.html"), "utf-8");
         const finalHtml = compiledHtmlString
             .replace(/{{contact_first_name}}/g, newContact.contact_first_name)
             .replace(/{{contact_message}}/g, newContact.contact_message)

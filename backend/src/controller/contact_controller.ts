@@ -24,10 +24,11 @@ export const add_contact = async function (req: Request, res: Response) {
       },
     });
 
-   const compiledHtmlString = fs.readFileSync(
-  path.join(process.cwd(), "backend/src/dopamine_contact.html"),
+const compiledHtmlString = fs.readFileSync(
+  path.join(process.cwd(), "src/dopamine_contact.html"),
   "utf-8"
 );
+
 
 
     const finalHtml = compiledHtmlString
