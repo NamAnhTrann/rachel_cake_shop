@@ -24,10 +24,11 @@ export const add_contact = async function (req: Request, res: Response) {
       },
     });
 
-    const compiledHtmlString = fs.readFileSync(
-      path.join(__dirname, "../dopamine_contact.html"),
-      "utf-8"
-    );
+   const compiledHtmlString = fs.readFileSync(
+  path.join(process.cwd(), "backend/src/dopamine_contact.html"),
+  "utf-8"
+);
+
 
     const finalHtml = compiledHtmlString
       .replace(/{{contact_first_name}}/g, newContact.contact_first_name)
