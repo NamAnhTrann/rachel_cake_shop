@@ -1,0 +1,106 @@
+<mjml>
+  <mj-head>
+    <mj-title>Dopamine Bakery - Contact Confirmation</mj-title>
+
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text padding="0" font-size="16px" color="#4a4a4a" />
+    </mj-attributes>
+
+    <mj-style>
+      .card {
+        background-color: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #f3e7db;
+        padding: 32px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      }
+      .heading {
+        color: #E07A5F;
+        font-weight: 700;
+      }
+      /* message has NO background, NO border */
+      .msg-plain {
+        padding-top: 6px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #333;
+      }
+    </mj-style>
+
+  </mj-head>
+
+  <mj-body background-color="#FAF7F2">
+
+<!-- HEADER -->
+<mj-section padding="40px 0 10px 0">
+  <mj-column>
+    <mj-text font-size="30px" color="#E07A5F" font-weight="700" padding-bottom="12px">
+      Dopamine Bakery ₊✩‧₊˚౨ৎ˚₊✩‧₊
+    </mj-text>
+
+    <mj-text font-size="14px" color="#9a9a9a">
+      Cakes that look good, taste better, and hit different
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+    <!-- CARD -->
+    <mj-section padding="0 0 20px 0">
+      <mj-column css-class="card">
+
+        <mj-text font-size="18px" font-weight="600" padding-bottom="12px">
+          Hi {{contact_first_name}},
+        </mj-text>
+
+        <mj-text line-height="1.7">
+          Thank you for reaching out to Dopamine.  
+          We’ve received your message and our bakers will get back to you shortly ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧
+        </mj-text>
+
+        <!-- YOUR MESSAGE -->
+        <mj-text css-class="heading" padding-top="25px" padding-bottom="12px">
+          Your Message
+        </mj-text>
+
+        <!-- Clean text only -->
+        <mj-text css-class="msg-plain">
+          {{contact_message}}
+        </mj-text>
+
+        <!-- ENQUIRY TYPE (cleaned) -->
+        <mj-text padding-top="25px">
+          <span class="heading">Enquiry Type:</span>
+          {{contact_enquiry_types}}
+        </mj-text>
+
+        <mj-text padding-top="30px" line-height="1.6">
+          Warm regards,<br />
+          <span class="heading">Dopamine Team</span>
+        </mj-text>
+
+      </mj-column>
+    </mj-section>
+
+<mj-section padding="20px 0 30px 0">
+  <mj-column>
+
+    <mj-text font-size="12px" color="#777" line-height="1.6">
+      <strong>Dopamine Bakery</strong><br />
+      RMIT Swanston Library, Building 10, Melbourne <br />
+      https://www.instagram.com/bakeatdopamine/<br />
+      https://rachel-cake-shop.vercel.app
+    </mj-text>
+
+    <mj-text font-size="11px" color="#999" padding-top="10px" line-height="1.6">
+      This email was sent to you because you contacted Dopamine Bakery.  
+      If you believe this message was sent in error, please ignore it.
+    </mj-text>
+
+  </mj-column>
+</mj-section>
+
+
+  </mj-body>
+</mjml>

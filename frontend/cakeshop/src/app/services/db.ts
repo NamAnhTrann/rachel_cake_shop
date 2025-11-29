@@ -30,7 +30,8 @@ export class Db {
   }
 
   list_contact(){
-    return this.http.post(`${this.baseUrl}/api/list/all/contacts`, httpOptions)
-  }
+  return this.http.get(`${this.baseUrl}/api/list/all/contacts`, httpOptions);
+}
+
 
 }
