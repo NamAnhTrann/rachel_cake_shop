@@ -49,7 +49,7 @@ const list_all_contact = async function (req, res) {
         let contacts = await contact_model_1.default.find({});
         return res
             .status(200)
-            .json({ data: contacts, message: "All contact listed" });
+            .json({ data: contacts, message: "All contact listed!" });
     }
     catch (err) {
         return res.status(500).json({ message: err.message });

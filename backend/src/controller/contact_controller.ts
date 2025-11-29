@@ -55,7 +55,7 @@ export const list_all_contact = async function (req: Request, res: Response) {
     let contacts = await Contact.find({});
     return res
       .status(200)
-      .json({ data: contacts, message: "All contact listed" });
+      .json({ data: contacts, message: "All contact listed!" });
   } catch (err: any) {
     return res.status(500).json({ message: err.message });
   }
