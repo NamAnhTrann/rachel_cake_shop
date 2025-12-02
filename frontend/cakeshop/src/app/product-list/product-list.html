@@ -27,7 +27,10 @@
           </p>
         </div>
 
-        <a class="after:absolute after:inset-0 after:z-1" href="#"></a>
+        <a
+          class="after:absolute after:inset-0 after:z-1"
+          [routerLink]="['/product_detail', p._id]"
+        ></a>
       </div>
 
       <!-- DESCRIPTION -->
@@ -60,9 +63,7 @@
           <!-- View Detailed -->
           <a
             class="py-2 px-3 flex-1 inline-flex justify-center items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl border border-orange-600 text-orange-600 hover:bg-orange-50 transition"
-            routerLink="/product_detail"
             [routerLink]="['/product_detail', p._id]"
-            
           >
             View Detailed
           </a>
