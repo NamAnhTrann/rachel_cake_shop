@@ -56,12 +56,12 @@
           <div class="mt-auto">
             <div class="flex items-center gap-3">
 
-              <a
+              <button (click)="addToCart(p._id!, 1)"
                 class="py-2 px-3 flex-1 inline-flex justify-center items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-500 focus:bg-yellow-500 transition"
                 routerLink="#"
               >
                 Buy now
-              </a>
+            </button>
 
               <a
                 class="py-2 px-3 flex-1 inline-flex justify-center items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl border border-orange-600 text-orange-600 hover:bg-orange-50 transition"

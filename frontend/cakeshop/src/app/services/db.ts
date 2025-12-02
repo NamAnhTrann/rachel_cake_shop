@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Products } from '../model/product_model';
+import { BehaviorSubject } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -12,6 +13,7 @@ const httpOptions = {
 })
 export class Db {
   private baseUrl: string;
+  cartCount = new BehaviorSubject<number>(0);
 
   constructor(private http: HttpClient) {
     const hostname = window.location.hostname;
@@ -23,6 +25,28 @@ export class Db {
     }
 
     console.log('DbService using backend:', this.baseUrl);
+  }
+  //guest checkout
+  getGuestId(): string {
+    let guest = localStorage.getItem('guest_id');
+
+    if (!guest) {
+      guest = crypto.randomUUID();
+      localStorage.setItem('guest_id', guest);
+    }
+
+    return guest;
+  }
+
+  refreshCartCount() {
+    const guest_id = this.getGuestId();
+
+    this.http
+      .post(`${this.baseUrl}/api/list/cart`, { guest_id }, httpOptions)
+      .subscribe((res: any) => {
+        const count = res.cart?.items?.length || 0;
+        this.cartCount.next(count);
+      });
   }
 
   //contacts
@@ -40,10 +64,36 @@ export class Db {
 
   //product; s
   list_all_product() {
-    return this.http.get<{ data: Products[]; message: string }>(`${this.baseUrl}/api/list/all/products`,httpOptions);
+    return this.http.get<{ data: Products[]; message: string }>(
+      `${this.baseUrl}/api/list/all/products`,
+      httpOptions
+    );
   }
 
   list_single_product(id: string) {
-    return this.http.get(`${this.baseUrl}/api/list/single/products/${id}`,httpOptions);
+    return this.http.get(
+      `${this.baseUrl}/api/list/single/products/${id}`,
+      httpOptions
+    );
   }
+
+  //cart
+  add_to_cart(product_id: string, quantity: number) {
+    const guest_id = this.getGuestId();
+
+    return this.http.post(
+      `${this.baseUrl}/api/add/cart`,
+      { guest_id, product_id, quantity },
+      httpOptions
+    );
+  }
+
+  get_cart(guest_id: string) {
+  return this.http.post(
+    `${this.baseUrl}/api/list/cart`,
+    { guest_id },
+    httpOptions
+  );
+}
+
 }

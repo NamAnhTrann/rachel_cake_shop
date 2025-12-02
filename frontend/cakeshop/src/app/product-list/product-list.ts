@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Products } from '../model/product_model';
 import { Db } from '../services/db';
 import AOS from 'aos';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +24,8 @@ export class ProductList implements AfterViewInit {
     product_img: '',
 
   };
+
+  quantity = 1;
 
   constructor(private db: Db) {}
 
@@ -54,5 +57,43 @@ list_all_products() {
     },
   });
 }
+
+addToCart(product_id: string, quantity: number = 1) {
+  this.db.add_to_cart(product_id, quantity).subscribe({
+    next: (res) => {
+      console.log("Added to cart:", res);
+      this.db.refreshCartCount();
+       Swal.fire({
+                title: 'Added To Cart!',
+                icon: 'success',
+      
+                background: document.documentElement.classList.contains('dark')
+                  ? '#0C0A09'
+                  : '#FFF9EF',
+      
+                color: document.documentElement.classList.contains('dark')
+                  ? '#E5E5E5'
+                  : '#111827',
+      
+                iconColor: document.documentElement.classList.contains('dark')
+                  ? '#FACC15'
+                  : '#EA580C',
+                // Confirm button
+                confirmButtonColor: document.documentElement.classList.contains(
+                  'dark'
+                )
+                  ? '#FACC15'
+                  : '#EA580C',
+      
+                confirmButtonText: 'Okay!',
+                customClass: {
+                  confirmButton: 'swal-confirm',
+                },
+              });
+    },
+    error: (err) => console.error("Error adding to cart:", err),
+  });
+}
+
 
 }

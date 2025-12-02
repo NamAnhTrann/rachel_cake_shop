@@ -24,12 +24,16 @@
       class="flex items-center gap-x-3 lg:gap-x-2 ms-auto py-1 lg:ps-6 lg:order-3 lg:col-span-3"
     >
       <a
-        routerLink="/product_list"
-        type="button"
-        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-orange-600 text-white hover:bg-orange-500 transition"
+        routerLink="/cart_page"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-600 text-white hover:bg-orange-500 transition"
       >
         <i class="fa-solid fa-cart-shopping text-white"></i>
-        Cart
+
+        @if (cartCount === 0) {
+        <span>Cart</span>
+        } @else {
+        <span>{{ cartCount }} items in cart</span>
+        }
       </a>
 
       <!-- Mobile menu button -->
