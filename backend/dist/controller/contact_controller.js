@@ -10,7 +10,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const add_contact = async function (req, res) {
     try {
-        const newContact = new contact_model_1.default({
+        let newContact = new contact_model_1.default({
             ...req.body,
         });
         await newContact.save();
@@ -29,7 +29,7 @@ const add_contact = async function (req, res) {
         const finalHtml = compiledHtmlString
             .replace(/{{contact_first_name}}/g, newContact.contact_first_name)
             .replace(/{{contact_message}}/g, newContact.contact_message)
-            .replace(/{{contact_enquiry_types}}/g, enquiryClean); // <-- USE CLEAN VALUE
+            .replace(/{{contact_enquiry_types}}/g, enquiryClean);
         const mailOptions = {
             from: `"Dopamine" <${process.env.EMAIL_USER}>`,
             to: newContact.contact_email,

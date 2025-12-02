@@ -17,7 +17,11 @@ app.use((0, cors_1.default)({
 }));
 //imports routers
 const contact_router_1 = __importDefault(require("./router/contact_router"));
+const product_router_1 = __importDefault(require("./router/product_router"));
+const cart_router_1 = __importDefault(require("./router/cart_router"));
 app.use("/api", contact_router_1.default);
+app.use('/api', product_router_1.default);
+app.use('/api', cart_router_1.default);
 const port_no = process.env.PORT_NO;
 const db_url = process.env.MONGO_DB;
 app.listen(port_no, function (err) {
