@@ -12,7 +12,7 @@ import { Db } from '../services/db';
 })
 export class ProductList {
   product: Products[] = [];
-
+  loading = true;
   product_data: Products = {
     product_title: '',
     product_description: '',
@@ -33,8 +33,10 @@ list_all_products() {
   this.db.list_all_product().subscribe({
     next: (data: { data: Products[]; message: string }) => {
       this.product = data.data;
+      this.loading = false;
     },
     error: (err: any) => {
+      this.loading = false;
       console.error('Error loading products:', err);
     },
   });

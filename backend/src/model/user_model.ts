@@ -12,6 +12,16 @@ let userSchema = new mongoose.Schema({
         required: true
     },
 
+    user_phone_number:{
+        type:String,
+        required:false,
+    },
+
+    user_email:{
+        type:String,
+        required:false,
+    },
+
     user_password: {
         user:String,
         required:true,
