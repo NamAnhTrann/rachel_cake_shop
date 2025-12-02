@@ -29,7 +29,6 @@ const cartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: false,
-    unique: true,
     validate: {
       validator: (v:any) => mongoose.Types.ObjectId.isValid(v),
       message: "Invalid user reference"
