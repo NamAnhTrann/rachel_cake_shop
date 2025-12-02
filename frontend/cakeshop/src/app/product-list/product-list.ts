@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Products } from '../model/product_model';
 import { Db } from '../services/db';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-product-list',
@@ -10,7 +11,7 @@ import { Db } from '../services/db';
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
-export class ProductList {
+export class ProductList implements AfterViewInit {
   product: Products[] = [];
   loading = true;
   product_data: Products = {
@@ -24,6 +25,18 @@ export class ProductList {
   };
 
   constructor(private db: Db) {}
+
+  ngAfterViewInit(): void {
+  
+    AOS.init({
+      duration: 1200,
+      once: true,
+    });
+  
+    setTimeout(() => {
+      AOS.refresh();
+    }, 200);
+  }
 
   ngOnInit(): void {
     this.list_all_products();
