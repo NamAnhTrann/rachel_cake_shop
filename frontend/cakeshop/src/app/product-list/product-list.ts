@@ -1,12 +1,43 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Products } from '../model/product_model';
+import { Db } from '../services/db';
 
 @Component({
   selector: 'app-product-list',
-  imports: [RouterLink],
+  imports: [FormsModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
 export class ProductList {
+  product: Products[] = [];
+
+  product_data: Products = {
+    product_title: '',
+    product_description: '',
+    product_price: 0,
+    product_category: 'cake',
+    product_quantity: 0,
+    product_img: '',
+
+  };
+
+  constructor(private db: Db) {}
+
+  ngOnInit(): void {
+    this.list_all_products();
+  }
+
+list_all_products() {
+  this.db.list_all_product().subscribe({
+    next: (data: { data: Products[]; message: string }) => {
+      this.product = data.data;
+    },
+    error: (err: any) => {
+      console.error('Error loading products:', err);
+    },
+  });
+}
 
 }

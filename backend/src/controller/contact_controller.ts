@@ -6,7 +6,7 @@ import path from "path";
 
 export const add_contact = async function (req: Request, res: Response) {
   try {
-    const newContact = new Contact({
+    let newContact = new Contact({
       ...req.body,
     });
     await newContact.save();
@@ -32,7 +32,7 @@ export const add_contact = async function (req: Request, res: Response) {
     const finalHtml = compiledHtmlString
       .replace(/{{contact_first_name}}/g, newContact.contact_first_name)
       .replace(/{{contact_message}}/g, newContact.contact_message)
-      .replace(/{{contact_enquiry_types}}/g, enquiryClean); // <-- USE CLEAN VALUE
+      .replace(/{{contact_enquiry_types}}/g, enquiryClean);
 
     const mailOptions = {
       from: `"Dopamine" <${process.env.EMAIL_USER}>`,
@@ -58,4 +58,6 @@ export const list_all_contact = async function (req: Request, res: Response) {
   } catch (err: any) {
     return res.status(500).json({ message: err.message });
   }
+
+  
 };

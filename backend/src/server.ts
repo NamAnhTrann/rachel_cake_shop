@@ -16,8 +16,11 @@ app.use(
 );
 //imports routers
 import contact_router from "./router/contact_router";
+import product_router from "./router/product_router";
+
 
 app.use("/api", contact_router)
+app.use('/api', product_router)
 
 const port_no = process.env.PORT_NO;
 const db_url = process.env.MONGO_DB;

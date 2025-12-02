@@ -1,28 +1,62 @@
-<!-- Dopamine Maintenance Page -->
-<section class="passion1 bg-[#FFF9EF] min-h-screen flex items-center justify-center">
-  <div class="max-w-3xl mx-auto w-full">
+<!-- Listings -->
+<div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 py-12 lg:py-24 mx-auto md:mt-4">
+  <!-- Card Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+    <!-- Card Loop -->
+    @for (p of product; track p._id) {
+    <div class="group flex flex-col">
+      <div class="relative">
+        <!-- IMAGE -->
+        <div class="aspect-4/4 overflow-hidden rounded-2xl">
+          <img
+            class="size-full object-cover rounded-2xl"
+            src="{{p.product_img}}"
+            alt="{{ p.product_title }}"
+          />
+        </div>
 
-    <!-- MAIN -->
-    <main id="content" class="flex flex-col items-center text-center px-6 py-12">
+        <!-- TITLE + PRICE -->
+        <div class="pt-4">
+          <h3 class="font-medium md:text-lg text-black dark:text-white">
+            {{ p.product_title }}
+          </h3>
 
-      <h1 class="text-6xl sm:text-8xl font-extrabold text-gray-900">
-        We'll Be Right Back
-      </h1>
+          <p class="mt-2 font-semibold text-black dark:text-white">
+            ${{ p.product_price }}
+          </p>
+        </div>
 
-      <p class="mt-4 text-gray-700 text-base sm:text-lg leading-relaxed max-w-xl">
-        Our bakers are upgrading the website while whipping up something sweeter behind the scenes.
-        Hang tight while we polish everything to perfection.
-      </p>
+        <a class="after:absolute after:inset-0 after:z-1" href="#"></a>
+      </div>
 
-      <!-- BUTTON -->
-      <a routerLink="/"
-        class="mt-10 px-6 py-3 bg-orange-600 text-white rounded-xl font-semibold
-               hover:bg-orange-500 focus:bg-orange-700 transition flex items-center gap-2">
-        <i class="fa-solid fa-screwdriver-wrench text-white"></i>
-        Still in Maintenance!
-      </a>
+      <!-- DESCRIPTION -->
+      <div class="mb-2 mt-4 text-sm">
+        <!-- Only show description if it exists -->
+        @if (p.product_description) {
+        <p
+          class="text-black dark:text-white pb-3 border-b border-gray-200 dark:border-neutral-700"
+        >
+          {{ p.product_description }}
+        </p>
+        }
 
-    </main>
+        <!-- List -->
+        <div class="flex flex-col">
+        </div>
+        <!-- End List -->
+      </div>
 
+      <!-- BTN -->
+      <div class="mt-auto">
+        <a
+          class="py-2 px-3 w-full inline-flex justify-center items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-500 focus:bg-yellow-500 transition"
+          href="#"
+        >
+          Buy now
+        </a>
+      </div>
+    </div>
+    }
+    <!-- End Card -->
   </div>
-</section>
+</div>

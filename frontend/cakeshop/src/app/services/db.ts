@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Products } from '../model/product_model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -10,7 +11,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class Db {
-   private baseUrl: string;
+  private baseUrl: string;
 
   constructor(private http: HttpClient) {
     const hostname = window.location.hostname;
@@ -25,13 +26,24 @@ export class Db {
   }
 
   //contacts
-  add_contact(contact_data: any){
-    return this.http.post(`${this.baseUrl}/api/add/contact`, contact_data, httpOptions)
+  add_contact(contact_data: any) {
+    return this.http.post(
+      `${this.baseUrl}/api/add/contact`,
+      contact_data,
+      httpOptions
+    );
   }
 
-  list_contact(){
-  return this.http.get(`${this.baseUrl}/api/list/all/contacts`, httpOptions);
-}
+  list_contact() {
+    return this.http.get(`${this.baseUrl}/api/list/all/contacts`, httpOptions);
+  }
 
+  //product; s
+  list_all_product() {
+    return this.http.get<{ data: Products[]; message: string }>(`${this.baseUrl}/api/list/all/products`,httpOptions);
+  }
 
+  list_single_product(id: string) {
+    return this.http.get(`${this.baseUrl}/list/single/products/${id}`,httpOptions);
+  }
 }
