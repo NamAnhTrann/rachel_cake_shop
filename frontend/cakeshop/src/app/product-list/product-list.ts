@@ -6,7 +6,7 @@ import { Db } from '../services/db';
 
 @Component({
   selector: 'app-product-list',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })

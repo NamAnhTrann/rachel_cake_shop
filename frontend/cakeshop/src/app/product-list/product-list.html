@@ -1,4 +1,5 @@
 <!-- Listings -->
+
 <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 py-12 lg:py-24 mx-auto md:mt-4">
   <!-- Card Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -59,7 +60,9 @@
           <!-- View Detailed -->
           <a
             class="py-2 px-3 flex-1 inline-flex justify-center items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl border border-orange-600 text-orange-600 hover:bg-orange-50 transition"
-            routerLink="#"
+            routerLink="/product_detail"
+            [routerLink]="['/product_detail', p._id]"
+            
           >
             View Detailed
           </a>

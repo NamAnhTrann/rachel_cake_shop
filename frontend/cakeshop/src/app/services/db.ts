@@ -44,6 +44,6 @@ export class Db {
   }
 
   list_single_product(id: string) {
-    return this.http.get(`${this.baseUrl}/list/single/products/${id}`,httpOptions);
+    return this.http.get(`${this.baseUrl}/api/list/single/products/${id}`,httpOptions);
   }
 }

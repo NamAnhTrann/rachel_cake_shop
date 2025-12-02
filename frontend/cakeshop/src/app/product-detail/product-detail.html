@@ -1,0 +1,114 @@
+<section class="relative mt-28 mb-36">
+  @if (product) {
+  <div class="w-full mx-auto px-4 sm:px-6 lg:px-0">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mx-auto max-md:px-2">
+      <!-- IMAGE -->
+      <div class="img flex justify-center lg:justify-end">
+        <div class="img-box">
+<img
+  [src]="product.product_img"
+  [alt]="product.product_title"
+  class="w-full 
+         h-80
+         sm:h-96
+         md:h-[500px]
+         lg:h-[600px]
+         xl:h-[700px]
+         object-cover rounded-xl"
+/>
+
+
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE CONTENT -->
+      <div class="data w-full lg:pr-8 flex items-center">
+        <div class="data w-full max-w-xl">
+          <h2
+            class="font-manrope font-bold text-3xl leading-10 text-gray-900 mb-2 capitalize"
+          >
+            {{ product.product_title }}
+          </h2>
+
+          <div class="flex flex-col sm:flex-row sm:items-center mb-6">
+            <h6
+              class="font-manrope font-semibold text-2xl leading-9 text-gray-900 pr-5 sm:border-r border-gray-200 mr-5"
+            >
+              ${{ product.product_price }}
+            </h6>
+            <span class="text-gray-500 text-sm">1624 review</span>
+          </div>
+
+          <p class="text-gray-500 text-base font-normal mb-5">
+            {{ product.product_description }}
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 py-8">
+            <!-- QUANTITY SELECT -->
+            <div class="flex sm:items-center sm:justify-center w-full">
+              <!-- Minus button -->
+              <button
+                (click)="decreaseQty()"
+                class="group py-4 px-6 border border-gray-400 rounded-l-full bg-white transition-all duration-300 hover:bg-gray-50 hover:shadow-sm hover:shadow-gray-300"
+              >
+                <svg
+                  class="stroke-gray-900 group-hover:stroke-black"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                >
+                  <path
+                    d="M16.5 11H5.5"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+
+              <!-- Quantity box -->
+              <input
+                type="text"
+                [(ngModel)]="quantity"
+                class="font-semibold text-gray-900 cursor-pointer text-lg py-[13px] px-6 w-full sm:max-w-[118px] outline-0 border-y border-gray-400 bg-transparent text-center hover:bg-gray-50"
+              />
+
+              <!-- Plus button -->
+              <button
+                (click)="increaseQty()"
+                class="group py-4 px-6 border border-gray-400 rounded-r-full bg-white transition-all duration-300 hover:bg-gray-50 hover:shadow-sm hover:shadow-gray-300"
+              >
+                <svg
+                  class="stroke-gray-900 group-hover:stroke-black"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                >
+                  <path
+                    d="M11 5.5V16.5M16.5 11H5.5"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- ADD TO CART -->
+            <button
+              class="group py-4 px-5 rounded-full bg-indigo-50 text-indigo-600 font-semibold text-lg w-full flex items-center justify-center gap-2"
+            >
+              Add to cart
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a routerLink="/product_list"
+              class="text-center w-full px-5 py-4 rounded-[100px] bg-indigo-600 text-white font-semibold text-lg"
+            >
+              Back To Shop
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</section>
