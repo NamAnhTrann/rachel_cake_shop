@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import Cart from "../model/cart_model";
 import Order from "../model/order_model";
 import Payment from "../model/payment_model";
+import Product from "../model/product_model";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Stripe secret key missing. Check .env");
@@ -50,6 +51,12 @@ export const stripeWebhook = async (req: Request, res: Response) => {
       0
     );
 
+    for (const item of cart.items) {
+      if (item.cart_quantity > item.product_id.product_quantity) {
+        return res.status(400).send("Not enough stock");
+      }
+    }
+
     // 1. Create ORDER first
     const order = await Order.create({
       user_id,
@@ -58,6 +65,14 @@ export const stripeWebhook = async (req: Request, res: Response) => {
       total_amount,
       order_status: "paid",
     });
+
+    for (const item of order_items) {
+      await Product.findByIdAndUpdate(
+        item.product_id,
+        { $inc: { product_quantity: -item.quantity } },
+        { new: true }
+      );
+    }
 
     // 2. Create PAYMENT linked to order
     const paymentRecord = await Payment.create({
