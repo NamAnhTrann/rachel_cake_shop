@@ -78,35 +78,60 @@ export class ProductDetail {
       next: (res) => {
         console.log('Added to cart:', res);
         this.db.refreshCartCount();
-         Swal.fire({
-                  title: 'Added to cart!',
-                  icon: 'success',
-        
-                  background: document.documentElement.classList.contains('dark')
-                    ? '#0C0A09'
-                    : '#FFF9EF',
-        
-                  color: document.documentElement.classList.contains('dark')
-                    ? '#E5E5E5'
-                    : '#111827',
-        
-                  iconColor: document.documentElement.classList.contains('dark')
-                    ? '#FACC15'
-                    : '#EA580C',
-                  // Confirm button
-                  confirmButtonColor: document.documentElement.classList.contains(
-                    'dark'
-                  )
-                    ? '#FACC15'
-                    : '#EA580C',
-        
-                  confirmButtonText: 'Okay!',
-                  customClass: {
-                    confirmButton: 'swal-confirm',
-                  },
-                });
+        Swal.fire({
+          title: 'Added to cart!',
+          icon: 'success',
+
+          background: document.documentElement.classList.contains('dark')
+            ? '#0C0A09'
+            : '#FFF9EF',
+
+          color: document.documentElement.classList.contains('dark')
+            ? '#E5E5E5'
+            : '#111827',
+
+          iconColor: document.documentElement.classList.contains('dark')
+            ? '#FACC15'
+            : '#EA580C',
+          // Confirm button
+          confirmButtonColor: document.documentElement.classList.contains(
+            'dark'
+          )
+            ? '#FACC15'
+            : '#EA580C',
+
+          confirmButtonText: 'Okay!',
+          customClass: {
+            confirmButton: 'swal-confirm',
+          },
+        });
       },
       error: (err) => console.error('Error adding to cart:', err),
     });
+  }
+
+validateQty() {
+  let raw = String(this.quantity).replace(/[^0-9]/g, "");
+
+  // If user clears the field => immediately reset to 1
+  if (raw === "" || raw === null) {
+    this.quantity = 1;
+    return;
+  }
+
+  let value = Number(raw);
+
+  // Minimum value = 1
+  if (value < 1) value = 1;
+
+  this.quantity = value;
+}
+
+  blockNonNumbers(event: KeyboardEvent) {
+    const blockedKeys = ['-', '+', 'e', 'E', '.', ','];
+
+    if (blockedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
   }
 }

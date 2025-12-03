@@ -57,11 +57,18 @@
               </button>
 
               <!-- Quantity box -->
-              <input
-                type="text"
-                [(ngModel)]="quantity"
-                class="font-semibold text-gray-900 cursor-pointer text-lg py-[13px] px-6 w-full sm:max-w-[118px] outline-0 border-y border-gray-400 bg-transparent text-center hover:bg-gray-50"
-              />
+      <input
+  type="text"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  [(ngModel)]="quantity"
+  (keydown)="blockNonNumbers($event)"
+  (input)="validateQty()"
+  class="font-semibold text-gray-900 cursor-pointer text-lg py-[13px] px-6
+         w-full sm:max-w-[118px] outline-0 border-y border-gray-400
+         bg-transparent text-center hover:bg-gray-50"
+/>
+
 
               <!-- Plus button -->
               <button
