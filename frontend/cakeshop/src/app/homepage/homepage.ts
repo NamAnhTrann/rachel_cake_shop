@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import AOS from 'aos';
 
 @Component({
   selector: 'app-homepage',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './homepage.html',
   styleUrl: './homepage.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
