@@ -17,7 +17,7 @@ export class CheckoutDetail implements OnInit {
   user_email = '';
   user_phone_number = '';
   cart_total = 0;
-
+  loading = false;
   constructor(private db: Db) {}
 
 ngOnInit(): void {
@@ -32,24 +32,34 @@ ngOnInit(): void {
   });
 }
 
+startCheckout() {
+  // prevent double click
+  if (this.loading) return;
+  this.loading = true;
 
-  startCheckout() {
-    const guest_id = this.db.getGuestId();
+  const guest_id = this.db.getGuestId();
 
-    const body = {
-      guest_id,
-      user_first_name: this.user_first_name,
-      user_last_name: this.user_last_name,
-      user_email: this.user_email,
-      user_phone_number: this.user_phone_number,
-    };
+  const body = {
+    guest_id,
+    user_first_name: this.user_first_name,
+    user_last_name: this.user_last_name,
+    user_email: this.user_email,
+    user_phone_number: this.user_phone_number,
+  };
 
-    this.db.start_checkout(body).subscribe({
-      next: (res: any) => {
-        localStorage.setItem("user_id", res.user_id);
-        window.location.href = res.url; // redirect to Stripe
-      },
-      error: (err) => console.error('Checkout error:', err),
-    });
-  }
+  this.db.start_checkout(body).subscribe({
+    next: (res: any) => {
+      localStorage.setItem("user_id", res.user_id);
+      window.location.href = res.url; 
+    },
+    error: (err) => {
+      console.error("Checkout error:", err);
+      this.loading = false; 
+    },
+    complete: () => {
+      this.loading = false; 
+    }
+  });
+}
+
 }

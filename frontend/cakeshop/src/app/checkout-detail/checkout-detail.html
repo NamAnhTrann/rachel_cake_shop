@@ -10,68 +10,108 @@
       <h2 class="text-2xl font-semibold mb-4">We'll just gather some details from you</h2>
 
       <form
-        (ngSubmit)="startCheckout()"
-        #checkoutForm="ngForm"
-        class="grid grid-cols-1 gap-6"
-      >
+  (ngSubmit)="startCheckout()"
+  #checkoutForm="ngForm"
+  class="grid grid-cols-1 gap-6"
+>
 
-        <!-- FIRST NAME -->
-        <div>
-          <label class="block mb-1 font-medium">First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            [(ngModel)]="user_first_name"
-            required
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
+  <!-- FIRST NAME -->
+  <div>
+    <label class="block mb-1 font-medium">First Name</label>
 
-        <!-- LAST NAME -->
-        <div>
-          <label class="block mb-1 font-medium">Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            [(ngModel)]="user_last_name"
-            required
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
+    <input
+      type="text"
+      name="firstName"
+      [(ngModel)]="user_first_name"
+      required
+      minlength="2"
+      #firstName="ngModel"
+      class="w-full border rounded-lg px-4 py-2"
+    />
 
-        <!-- EMAIL -->
-        <div>
-          <label class="block mb-1 font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="user_email"
-            required
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
+    @if (firstName.invalid && firstName.touched) {
+      <p class="text-red-600 text-sm mt-1">
+        First name is required and must be at least 2 characters.
+      </p>
+    }
+  </div>
 
-        <!-- PHONE -->
-        <div>
-          <label class="block mb-1 font-medium">Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            [(ngModel)]="user_phone_number"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
+  <!-- LAST NAME -->
+  <div>
+    <label class="block mb-1 font-medium">Last Name</label>
+
+    <input
+      type="text"
+      name="lastName"
+      [(ngModel)]="user_last_name"
+      required
+      minlength="2"
+      #lastName="ngModel"
+      class="w-full border rounded-lg px-4 py-2"
+    />
+
+    @if (lastName.invalid && lastName.touched) {
+      <p class="text-red-600 text-sm mt-1">
+        Last name is required and must be at least 2 characters.
+      </p>
+    }
+  </div>
+
+  <!-- EMAIL -->
+  <div>
+    <label class="block mb-1 font-medium">Email</label>
+
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="user_email"
+      required
+      email
+      #email="ngModel"
+      class="w-full border rounded-lg px-4 py-2"
+    />
+
+    @if (email.invalid && email.touched) {
+      <p class="text-red-600 text-sm mt-1">
+        Please enter a valid email.
+      </p>
+    }
+  </div>
+
+  <!-- PHONE -->
+  <div>
+    <label class="block mb-1 font-medium">Phone Number</label>
+
+    <input
+      type="text"
+      name="phone"
+      [(ngModel)]="user_phone_number"
+      pattern="^[0-9]{8,15}$"
+      #phone="ngModel"
+      class="w-full border rounded-lg px-4 py-2"
+    />
+
+    @if (phone.invalid && phone.touched) {
+      <p class="text-red-600 text-sm mt-1">
+        Phone must be 8–15 digits.
+      </p>
+    }
+  </div>
+
+  <!-- SUBMIT BUTTON -->
+<button
+  type="submit"
+  [disabled]="checkoutForm.invalid || loading"
+  class="w-full py-3 rounded-lg rounded-xl border border-transparent 
+         bg-orange-600 text-white hover:bg-orange-500 
+         focus:bg-yellow-500 transition disabled:bg-gray-400"
+>
+  Continue to Payment
+</button>
 
 
-        <button
-          type="submit"
-          [disabled]="checkoutForm.invalid"
-          class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
-        >
-          Continue to Payment
-        </button>
+</form>
 
-      </form>
     </div>
 
     <!-- RIGHT COLUMN: ORDER SUMMARY -->
