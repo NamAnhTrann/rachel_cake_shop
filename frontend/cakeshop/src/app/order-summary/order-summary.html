@@ -38,28 +38,29 @@
     </p>
 
     <!-- ORDER META GRID -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-8 border-y border-gray-200 mb-10"
-    >
-      <div>
-        <p class="text-gray-500 mb-2">Delivery Date</p>
-        <h6 class="font-semibold text-2xl text-black">
-          {{ order?.createdAt | date:'MMM d, y' }}
-        </h6>
-      </div>
+<div
+  class="grid grid-cols-1 sm:grid-cols-3 gap-8 py-8 border-y border-gray-200 mb-10 text-center sm:text-left"
+>
+  <div>
+    <p class="text-gray-500 mb-2">Delivery Date</p>
+    <h6 class="font-semibold text-2xl text-black">
+      {{ order?.createdAt | date:'MMM d, y' }}
+    </h6>
+  </div>
 
-      <div>
-        <p class="text-gray-500 mb-2">Order</p>
-        <h6 class="font-semibold text-2xl text-black">
-          #{{ order?._id?.slice(-6) }}
-        </h6>
-      </div>
+  <div>
+    <p class="text-gray-500 mb-2">Order</p>
+    <h6 class="font-semibold text-2xl text-black">
+      #{{ order?._id?.slice(-6) }}
+    </h6>
+  </div>
 
-      <div>
-        <p class="text-gray-500 mb-2">Payment Method</p>
-        <h6 class="font-semibold text-xl text-black">Stripe</h6>
-      </div>
-    </div>
+  <div>
+    <p class="text-gray-500 mb-2">Payment Method</p>
+    <h6 class="font-semibold text-2xl text-black">Stripe</h6>
+  </div>
+</div>
+
 
     <!-- ORDER ITEMS -->
     @for (item of orderItems; track item.product_id) {
