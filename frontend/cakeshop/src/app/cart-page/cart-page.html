@@ -1,92 +1,88 @@
 <section class="max-w-4xl mx-auto px-4 py-10 mt-32">
-
   @if (loading) {
-    <p class="text-center text-4xl">Loading cart...</p>
-  }
+  <p class="text-center text-4xl">Loading cart...</p>
+  } @if (!loading && !cart) {
+  <p class="text-center text-4xl">Your cart is empty.</p>
+<a routerLink="/product_list"
+  class="block mx-auto mt-4 px-4 py-2 rounded-full bg-orange-600 text-white hover:bg-orange-500 transition text-base w-fit"
+>
+  Browse Products
+  </a>
 
-  @if (!loading && !cart) {
-    <p class="text-center text-4xl">Your cart is empty.</p>
-  }
 
-  @if (cart && cart.items.length > 0) {
+  } @if (cart && cart.items.length > 0) {
 
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-semibold">Your Cart</h1>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-semibold">Your Cart</h1>
 
-      <!-- MORE BUTTON (Top Right) -->
-      <div class="relative">
+    <!-- MORE BUTTON (Top Right) -->
+    <div class="relative">
+      <button
+        (click)="showMenu = !showMenu"
+        class="px-3 py-1 rounded-lg border hover:bg-gray-100 transition"
+      >
+        …
+      </button>
+
+      @if (showMenu) {
+      <div
+        class="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-20"
+      >
         <button
-          (click)="showMenu = !showMenu"
-          class="px-3 py-1 rounded-lg border hover:bg-gray-100 transition"
+          (click)="clearCart()"
+          class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
         >
-          …
+          Clear Entire Cart
         </button>
-
-        @if (showMenu) {
-          <div
-            class="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-20"
-          >
-            <button
-              (click)="clearCart()"
-              class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
-            >
-              Clear Entire Cart
-            </button>
-          </div>
-        }
       </div>
-    </div>
-
-    <div class="flex flex-col gap-6">
-
-      @for (item of cart.items; track item.product_id) {
-        <div class="p-4 border rounded-xl flex gap-4 items-center relative">
-
-          <!-- DELETE BUTTON FOR EACH ITEM -->
-          <button
-            (click)="deleteItem(item.product_id._id)"
-            class="absolute top-3 right-3 text-gray-400 hover:text-red-500"
-          >
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-
-          <img
-            class="w-24 h-24 rounded-lg object-cover"
-            [src]="item.product_id.product_img"
-          />
-
-          <div class="flex-1">
-            <h3 class="font-semibold text-lg">
-              {{ item.product_id.product_title }}
-            </h3>
-
-            <p class="text-gray-600">
-              Quantity: {{ item.cart_quantity }}
-            </p>
-
-            <p class="font-bold mt-1">
-              ${{ item.product_id.product_price * item.cart_quantity }}
-            </p>
-          </div>
-
-        </div>
       }
-
-      <div class="mt-6 p-4 border-t flex justify-between text-lg font-semibold">
-        <span>Subtotal:</span>
-        <span>${{ cart.total_price }}</span>
-      </div>
-
-      <!-- PROCEED TO CHECKOUT BUTTON -->
-      <div class="mt-6 flex justify-end">
-        <button
-          routerLink="/checkout-detail"
-          class="px-6 py-3 rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-500 focus:bg-yellow-500 transition"
-        >
-          Proceed to Checkout
-        </button>
-      </div>
-
     </div>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    @for (item of cart.items; track item.product_id) {
+    <div class="p-4 border rounded-xl flex gap-4 items-center relative">
+      <!-- DELETE BUTTON FOR EACH ITEM -->
+      <button
+        (click)="deleteItem(item.product_id._id)"
+        class="absolute top-3 right-3 text-gray-400 hover:text-red-500"
+      >
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <img
+        class="w-24 h-24 rounded-lg object-cover"
+        [src]="item.product_id.product_img"
+      />
+
+      <div class="flex-1">
+        <h3 class="font-semibold text-lg">
+          {{ item.product_id.product_title }}
+        </h3>
+
+        <p class="text-gray-600">Quantity: {{ item.cart_quantity }}</p>
+
+        <p class="font-bold mt-1">
+          ${{ item.product_id.product_price * item.cart_quantity }}
+        </p>
+      </div>
+    </div>
+    }
+
+    <div class="mt-6 p-4 border-t flex justify-between text-lg font-semibold">
+      <span>Subtotal:</span>
+      <span>${{ cart.total_price }}</span>
+    </div>
+
+    <!-- PROCEED TO CHECKOUT BUTTON -->
+    <div class="mt-6 flex justify-end">
+      <button
+        routerLink="/checkout-detail"
+        class="px-6 py-3 rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-500 focus:bg-yellow-500 transition"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
   }
 </section>
