@@ -51,8 +51,8 @@ export const start_checkout = async function (req: Request, res: Response) {
     }));
 
     //for prod and dev environment
-    const BASE_URL = "http://localhost:4200/#";
-    // const BASE_URL = "https://missscrappy.com/#";
+    // const BASE_URL = "http://localhost:4200/#";
+    const BASE_URL = "https://rachel-cake-shop.vercel.app/#";
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       success_url: `${BASE_URL}/order-summary-page`,
