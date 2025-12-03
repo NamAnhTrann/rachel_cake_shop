@@ -20,11 +20,7 @@ let userSchema = new mongoose.Schema({
     user_email:{
         type:String,
         required:false,
-    },
-
-    user_password: {
-        user:String,
-        required:true,
+        sparse: true
     },
   
 })

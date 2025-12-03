@@ -2,8 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 require("dotenv").config();
-
 const app = express();
+
+import webhookRouter from "./router/webhook"
+app.use("/stripe", express.raw({ type: "application/json" }), webhookRouter);
+
 app.use(express.json());
 
 app.use(
@@ -18,12 +21,12 @@ app.use(
 import contact_router from "./router/contact_router";
 import product_router from "./router/product_router";
 import cart_router from "./router/cart_router";
-
+import order_router from "./router/order_router";
 
 app.use("/api", contact_router)
 app.use('/api', product_router)
 app.use('/api', cart_router)
-
+app.use('/api', order_router)
 
 const port_no = process.env.PORT_NO;
 const db_url = process.env.MONGO_DB;
