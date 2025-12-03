@@ -1,13 +1,31 @@
 <section class="max-w-4xl mx-auto px-4 py-10 mt-32">
-  @if (loading) {
-  <p class="text-center text-4xl">Loading cart...</p>
-  } @if (!loading && !cart) {
-  <p class="text-center text-4xl">Your cart is empty.</p>
-<a routerLink="/product_list"
-  class="block mx-auto mt-4 px-4 py-2 rounded-full bg-orange-600 text-white hover:bg-orange-500 transition text-base w-fit"
->
-  Browse Products
-  </a>
+@if (loading) {
+  <div class="min-h-[70vh] sm:min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+    <p class="text-4xl font-semibold text-gray-900">Loading Your Cart...</p>
+  </div>
+}
+
+@if (!loading && !cart) {
+  <div class="min-h-[70vh] sm:min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+
+    <h2 class="text-4xl font-semibold text-gray-900">
+      Your Cart is Empty
+    </h2>
+
+    <p class="text-gray-600 text-lg mt-4 max-w-md">
+      You have no items in your cart.  
+      Browse our handcrafted cakes and discover something you’ll love.
+    </p>
+
+    <a
+      routerLink="/product_list"
+      class="mt-8 px-6 py-3 rounded-full bg-orange-600 text-white text-lg font-medium
+             hover:bg-orange-500 transition block w-fit"
+    >
+      Browse Products
+    </a>
+
+  </div>
 
 
   } @if (cart && cart.items.length > 0) {
