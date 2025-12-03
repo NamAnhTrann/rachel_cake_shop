@@ -1,5 +1,6 @@
 import Cart from "../model/cart_model";
 import User from "../model/user_model";
+import Order from "../model/order_model";
 
 import express, { Request, Response } from "express";
 import Stripe from "stripe";
@@ -34,7 +35,7 @@ export const start_checkout = async function (req: Request, res: Response) {
 
     //transfer guest id cart to user object
     cart.user_id = user._id;
-    cart.guest_id = null;
+    // cart.guest_id = null;
     await cart.save();
 
     //line items for stripe
@@ -50,7 +51,7 @@ export const start_checkout = async function (req: Request, res: Response) {
     }));
 
     //for prod and dev environment
-    const BASE_URL = "http://localhost:4200";
+    const BASE_URL = "http://localhost:4200/#";
     // const BASE_URL = "https://missscrappy.com/#";
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -66,7 +67,7 @@ export const start_checkout = async function (req: Request, res: Response) {
 
     return res
       .status(200)
-      .json({ message: "Checkout created", url: session.url });
+      .json({ message: "Checkout created", url: session.url,user_id: user._id  });
   } catch (err: any) {
     console.error(err);
     return res
@@ -74,6 +75,49 @@ export const start_checkout = async function (req: Request, res: Response) {
       .json({ message: "Server error", error: err.message });
   }
 };
+
+export const list_orders = async (req: Request, res: Response) => {
+  try {
+    const { user_id } = req.params;
+
+    if (!user_id) {
+      return res.status(400).json({ message: "Missing user_id" });
+    }
+
+    const orders = await Order.find({ user_id })
+      .populate("order_items.product_id")  
+      .populate("payment_id")              
+      .sort({ createdAt: -1 });            
+
+    return res.status(200).json({ orders });
+  } catch (err: any) {
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
+  }
+};
+
+export const getLatestOrder = async (req: Request, res: Response) => {
+  try {
+    const { user_id } = req.params;
+
+    const order = await Order.findOne({ user_id })
+      .populate("order_items.product_id")
+      .populate("user_id")
+      .sort({ createdAt: -1 });
+
+    if (!order) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    return res.json({ order });
+
+  } catch (err: any) {
+    return res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 
 
 

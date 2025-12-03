@@ -20,10 +20,7 @@ let userSchema = new mongoose_1.default.Schema({
     user_email: {
         type: String,
         required: false,
-    },
-    user_password: {
-        user: String,
-        required: true,
+        sparse: true
     },
 });
 // productSchema.index({ contact_email: 1 });

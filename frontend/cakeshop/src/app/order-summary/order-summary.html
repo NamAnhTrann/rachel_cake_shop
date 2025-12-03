@@ -1,0 +1,96 @@
+<section class="max-w-3xl mx-auto px-4 py-16 mt-28 text-center">
+    @if(!order){
+        <h1 class="text-center text-4xl">You Have No Order Yet <br> Purchase Something!</h1>
+    } @else {
+         <!-- Heading -->
+  <h1 class="text-4xl font-semibold text-[#E07A5F] mb-3">
+    Thank You for Your Order!
+  </h1>
+
+  <p class="text-[#8A6E63] text-lg mb-8">
+    Your treats are being prepared with love.  
+    An email confirmation is on its way.
+  </p>
+
+  <!-- ORDER SUMMARY BOX -->
+  <div class="border rounded-xl p-6 bg-[#FFF7F2] text-left mx-auto max-w-xl shadow-sm">
+
+    <h2 class="text-2xl font-semibold text-[#E07A5F] mb-4">
+      Order Summary
+    </h2>
+
+    <!-- Order ID -->
+    <div class="flex justify-between text-lg mb-4">
+      <span class="font-semibold text-[#8A6E63]">Order</span>
+      <span class="text-[#E07A5F]">#{{ order?._id?.slice(-3) }}</span>
+    </div>
+
+    <!-- Order Date -->
+    <div class="flex justify-between text-lg mb-4">
+      <span class="font-semibold text-[#8A6E63]">Date</span>
+      <span>{{ order?.createdAt | date:'MMM d, y' }}</span>
+    </div>
+
+    <hr class="my-6 border-[#F3D6C6]">
+
+    <!-- ORDER ITEMS -->
+    <div class="space-y-5">
+
+      @for (item of orderItems; track item.product_id) {
+
+        <div class="flex items-center gap-4">
+
+          <!-- IMAGE -->
+          <img
+            [src]="item.product_id?.product_img"
+            class="w-20 h-20 rounded-lg object-cover shadow"
+          />
+
+          <!-- DETAILS -->
+          <div class="flex-1">
+            <p class="font-semibold text-[#5C4B46]">
+              {{ item.product_id?.product_title }}
+            </p>
+
+            <p class="text-[#8A6E63]">
+              Qty: {{ item.quantity }}
+            </p>
+          </div>
+
+          <!-- LINE TOTAL -->
+          <div class="font-semibold text-[#E07A5F]">
+            ${{ item.quantity * item.price_at_purchase }}
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+    <hr class="my-6 border-[#F3D6C6]">
+
+    <!-- Total Paid -->
+    <div class="flex justify-between text-xl font-semibold">
+      <span>Total Paid</span>
+      <span class="text-[#E07A5F]">
+        ${{ order?.total_amount }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- BUTTON -->
+  <div class="flex justify-center mt-10">
+    <a
+      routerLink="/product_list"
+      class="px-6 py-3 rounded-lg bg-[#E07A5F] text-white text-lg font-medium
+             hover:bg-[#cf6c53] transition shadow"
+    >
+      Continue Shopping
+    </a>
+  </div>
+
+    }
+ 
+</section>

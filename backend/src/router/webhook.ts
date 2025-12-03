@@ -1,13 +1,17 @@
+// webhook.ts
 import { Request, Response } from "express";
 import Stripe from "stripe";
+import Cart from "../model/cart_model";
 import Order from "../model/order_model";
 import Payment from "../model/payment_model";
-import Cart from "../model/cart_model";
-import express from "express";
-const router = express.Router();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
-router.post("/webhook", async function (req: Request, res: Response) {
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Stripe secret key missing. Check .env");
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export const stripeWebhook = async (req: Request, res: Response) => {
   const sig = req.headers["stripe-signature"] as string;
 
   let event;
@@ -19,11 +23,12 @@ router.post("/webhook", async function (req: Request, res: Response) {
       process.env.STRIPE_WEBHOOK_SECRET as string
     );
   } catch (err: any) {
-    console.error(" Webhook signature verification failed:", err.message);
+    console.error("Webhook verification failed:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  //Case: payment pass
+  console.log("STRIPE WEBHOOK RECEIVED:", event.type);
+
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as any;
 
@@ -32,11 +37,8 @@ router.post("/webhook", async function (req: Request, res: Response) {
     const payment_intent_id = session.payment_intent;
 
     const cart = await Cart.findById(cart_id).populate("items.product_id");
-    if (!cart) {
-      return res.status(400).send("cart not found");
-    }
+    if (!cart) return res.status(400).send("Cart not found");
 
-    //order items
     const order_items = cart.items.map((item: any) => ({
       product_id: item.product_id,
       quantity: item.cart_quantity,
@@ -48,34 +50,34 @@ router.post("/webhook", async function (req: Request, res: Response) {
       0
     );
 
-    //create payment
-    const paymentRecord = await Payment.create({
-      user_id,
-      stripe_payment_intent: payment_intent_id,
-      amount_paid: total_amount,
-      currency: "aud",
-      payment_status: "succeeded",
-    });
+    // 1. Create ORDER first
     const order = await Order.create({
       user_id,
       cart_id,
       order_items,
       total_amount,
       order_status: "paid",
-      payment_id: paymentRecord._id,
     });
 
-    // Link Payment Order
-    paymentRecord.order_id = order._id;
-    await paymentRecord.save();
+    // 2. Create PAYMENT linked to order
+    const paymentRecord = await Payment.create({
+      user_id,
+      order_id: order._id,
+      stripe_payment_intent: payment_intent_id,
+      amount_paid: total_amount,
+      currency: "aud",
+      payment_status: "succeeded",
+    });
 
-    // clear cart
+    // 3. Update order with payment ID
+    order.payment_id = paymentRecord._id;
+    await order.save();
+
+    // 4. Clear Cart
     await Cart.findByIdAndDelete(cart_id);
 
-    console.log(" Order created:", order._id);
+    console.log("ORDER CREATED:", order._id);
   }
 
-  return res.json({ received: true });
-});
-
-export default router;
+  res.json({ received: true });
+};

@@ -67,3 +67,79 @@ export const get_cart = async (req: Request, res: Response) => {
 
   return res.json({ cart });
 };
+
+export const delete_item_in_cart = async function (
+  req: Request,
+  res: Response
+) {
+  try {
+    const { guest_id, product_id } = req.params;
+
+    if (!guest_id || !product_id) {
+      return res
+        .status(400)
+        .json({ message: "Missing guest_id or product_id" });
+    }
+
+    const cart = await Cart.findOne({ guest_id }).populate("items.product_id");
+    if (!cart) {
+      return res.status(400).json({ message: "Cart not found" });
+    }
+
+    // Remove the item
+    cart.items = cart.items.filter(
+      (item: any) =>
+        String(item.product_id?._id || item.product_id) !== String(product_id)
+    );
+
+    // Recalculate total AFTER deletion
+    let newTotal = 0;
+
+    for (const item of cart.items) {
+      const price = item.product_id.product_price; 
+      newTotal += item.cart_quantity * price;
+    }
+
+    cart.total_price = newTotal;
+    cart.updatedAt = new Date();
+
+    await cart.save();
+
+    return res.status(200).json({
+      message: "Item removed from cart",
+      cart,
+    });
+  } catch (err: any) {
+    console.error("Delete item failed:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+};
+
+export const delete_whole_cart = async function (req: Request, res: Response) {
+  try {
+    const { guest_id } = req.params;
+
+    if (!guest_id) {
+      return res.status(400).json({ message: "Missing guest_id" });
+    }
+
+    const cart = await Cart.findOne({ guest_id });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    await Cart.deleteOne({ guest_id });
+
+    return res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (err: any) {
+    console.error("Error deleting entire cart:", err);
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
+  }
+};

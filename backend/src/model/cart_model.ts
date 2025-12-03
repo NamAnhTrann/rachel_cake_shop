@@ -38,7 +38,6 @@ const cartSchema = new mongoose.Schema({
   guest_id: {
     type: String,
     required: false,
-    unique: true
   },
 
   items: {

@@ -27,7 +27,6 @@ const cartSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: false,
-        unique: true,
         validate: {
             validator: (v) => mongoose.Types.ObjectId.isValid(v),
             message: "Invalid user reference"
@@ -36,7 +35,6 @@ const cartSchema = new mongoose.Schema({
     guest_id: {
         type: String,
         required: false,
-        unique: true
     },
     items: {
         type: [cartItemSchema],

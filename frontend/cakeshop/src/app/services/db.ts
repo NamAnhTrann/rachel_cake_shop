@@ -96,4 +96,34 @@ export class Db {
   );
 }
 
+delete_cart_item(guest_id: string, product_id: string) {
+  return this.http.delete(
+    `${this.baseUrl}/api/cart/delete/${guest_id}/${product_id}`
+  );
+}
+
+delete_whole_cart(guest_id: string) {
+  return this.http.delete(
+    `${this.baseUrl}/api/cart/delete-all/${guest_id}`
+  );
+}
+
+//order
+
+start_checkout(body: any) {
+  return this.http.post(`${this.baseUrl}/api/start/checkout`, body);
+}
+
+
+getOrders(user_id: string) {
+  return this.http.get(`${this.baseUrl}/api/list/order/${user_id}`);
+}
+
+fetchLatestOrder(user_id: string) {
+  return this.http.get(`${this.baseUrl}/api/orders/latest/${user_id}`);
+}
+
+
+
+
 }

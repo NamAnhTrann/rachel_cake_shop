@@ -1,12 +1,21 @@
-import express, { Request, Response } from "express";
+require("dotenv").config();
+import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-require("dotenv").config();
+import { stripeWebhook } from "./router/webhook";
+
+
+
 const app = express();
 
-import webhookRouter from "./router/webhook"
-app.use("/stripe", express.raw({ type: "application/json" }), webhookRouter);
+// 1. STRIPE WEBHOOK FIRST
+app.post(
+  "/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
 
+// 2. NORMAL JSON PARSING FOR THE REST
 app.use(express.json());
 
 app.use(
@@ -14,49 +23,27 @@ app.use(
     origin: ["http://localhost:4200", "https://rachel-cake-shop.vercel.app"],
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-//imports routers
+
+// All API routers
 import contact_router from "./router/contact_router";
 import product_router from "./router/product_router";
 import cart_router from "./router/cart_router";
 import order_router from "./router/order_router";
 
-app.use("/api", contact_router)
-app.use('/api', product_router)
-app.use('/api', cart_router)
-app.use('/api', order_router)
+app.use("/api", contact_router);
+app.use("/api", product_router);
+app.use("/api", cart_router);
+app.use("/api", order_router);
 
-const port_no = process.env.PORT_NO;
-const db_url = process.env.MONGO_DB;
-app.listen(port_no, function (err) {
-  if (err) {
-    console.log("Error connecting to: 3030", err);
-  } else {
-    //this line here is to check null safety from TypeScript, so like anytime if anything can be null, just simply throw an error checks
-    if (!port_no) {
-      throw new Error("No port exist");
-    }
-    console.log("connected: ", port_no);
-  }
-});
+app.get("/", (_, res) => res.send("Backend running"));
 
-async function connectDB() {
-  try {
-    //this line here is to check null safety from TypeScript, so like anytime if anything can be null, just simply throw an error checks
-    if (!db_url) {
-      throw new Error(`Error occured`);
-    }
-    await mongoose.connect(db_url);
-    console.log("db connected");
-  } catch (err) {
-    console.log("error occured");
-  }
-}
+mongoose
+  .connect(process.env.MONGO_DB as string)
+  .then(() => console.log("DB connected"))
+  .catch(() => console.log("DB connection error"));
 
-app.get('/', function(req: Request,res:Response){
-    return res.send("Testing Backend")
-})
-
-connectDB();
+app.listen(process.env.PORT_NO, () =>
+  console.log("Server running on", process.env.PORT_NO)
+);
