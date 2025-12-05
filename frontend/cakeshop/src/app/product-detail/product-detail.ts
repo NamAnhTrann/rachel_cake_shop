@@ -16,6 +16,8 @@ export class ProductDetail {
   product?: Products;
   quantity = 1;
   suggested: Products[] = [];
+  maxLength = 2;
+
 
   constructor(private db: Db, private route: ActivatedRoute) {}
 
@@ -41,16 +43,21 @@ export class ProductDetail {
     });
   }
 
-  load_single_product(product_id: string) {
-    this.db.list_single_product(product_id).subscribe({
-      next: (data: any) => {
-        this.product = data.data;
-        this.load_suggested_products(product_id);
-        this.quantity = 1; // reset quantity on product change
-      },
-      error: (err: any) => console.error('error listing product', err),
-    });
-  }
+load_single_product(product_id: string) {
+  this.db.list_single_product(product_id).subscribe({
+    next: (data: any) => {
+      this.product = data.data;
+
+      const stock = this.product?.product_quantity ?? 1;
+      this.maxLength = stock.toString().length;
+
+      this.load_suggested_products(product_id);
+      this.quantity = 1;
+    },
+    error: (err: any) => console.error('error listing product', err),
+  });
+}
+
 
   load_suggested_products(currentId: string) {
     this.db.list_all_product().subscribe({
@@ -63,13 +70,17 @@ export class ProductDetail {
     });
   }
 
-  decreaseQty() {
-    this.quantity = Math.max(1, this.quantity - 1);
-  }
+decreaseQty() {
+  this.quantity = Math.max(1, this.quantity - 1);
+}
 
-  increaseQty() {
-    this.quantity = this.quantity + 1;
+increaseQty() {
+  const maxStock = this.product?.product_quantity || 1;
+  if (this.quantity < maxStock) {
+    this.quantity++;
   }
+}
+
 
   addToCart() {
     if (!this.product?._id) return;
@@ -124,6 +135,8 @@ validateQty() {
   // Minimum value = 1
   if (value < 1) value = 1;
 
+  const maxStock = this.product?.product_quantity || 1;
+  if (value > maxStock) value = maxStock;
   this.quantity = value;
 }
 
