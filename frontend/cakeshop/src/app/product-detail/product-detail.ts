@@ -35,12 +35,12 @@ export class ProductDetail {
         : '#111827',
 
       iconColor: document.documentElement.classList.contains('dark')
-        ? '#F87171'
-        : '#DC2626',
+        ? '#FACC15'
+        : '#EA580C',
 
       confirmButtonColor: document.documentElement.classList.contains('dark')
-        ? '#F87171'
-        : '#DC2626',
+        ? '#FACC15'
+        : '#EA580C',
 
       confirmButtonText: 'Close',
       customClass: {
